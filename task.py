@@ -3,6 +3,8 @@ def conv_num(num_str):
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
+    if not num_str:
+        return None
     return 0
 
 
