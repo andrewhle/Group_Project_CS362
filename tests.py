@@ -41,6 +41,10 @@ class TestCase(unittest.TestCase):
         """Tests that input of '--845' returns None."""
         self.assertIsNone(conv_num("--845"))
 
+    def test_conv_num_int_returned(self):
+        """Tests that return value is of type int"""
+        self.assertTrue(isinstance(conv_num("1"), int))
+
     ############################################################
     #
     # my_datetime Tests

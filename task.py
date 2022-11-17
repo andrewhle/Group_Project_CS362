@@ -19,6 +19,8 @@ def conv_num(num_str):
             else:
                 return None
         return res * negative
+    else:
+        return None
 
 
 def my_datetime(num_sec):
