@@ -6,10 +6,10 @@ def conv_num(num_str):
     if not num_str:
         return None
     nums = "1234567890"
+    negative = 1
+    res = 0
     # Check for valid integer
     if '.' not in num_str and 'x' not in num_str:
-        res = 0
-        negative = 1
         for i in range(len(num_str)):
             if i == 0 and num_str[i] == '-':
                 negative = -1
