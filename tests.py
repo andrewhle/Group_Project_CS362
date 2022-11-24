@@ -16,7 +16,7 @@ class TestCase(unittest.TestCase):
     def test_conv_num_valid(self):
         """Tests for valid return value of function conv_num."""
         self.assertEqual(conv_num('0'), 0)
-        
+
     def test_conv_num_empty_input(self):
         """Tests that empty string input returns None."""
         self.assertIsNone(conv_num(""))
