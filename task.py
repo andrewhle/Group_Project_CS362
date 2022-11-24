@@ -3,7 +3,24 @@ def conv_num(num_str):
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
-    return 0
+    if not num_str:
+        return None
+    nums = "1234567890"
+    negative = 1
+    res = 0
+    # Check for valid integer
+    if '.' not in num_str and 'x' not in num_str:
+        for i in range(len(num_str)):
+            if i == 0 and num_str[i] == '-':
+                negative = -1
+                continue
+            if num_str[i] in nums:
+                res = res * 10 + (ord(num_str[i]) - 48)
+            else:
+                return None
+        return res * negative
+    else:
+        return None
 
 
 def my_datetime(num_sec):
