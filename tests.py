@@ -81,9 +81,16 @@ class TestCase(unittest.TestCase):
         """Tests for valid return of function conv_endian."""
         self.assertEqual(conv_endian(0), "00")
 
-    def test_conv_endian(self):
+    def test_conv_endian1(self):
         """Tests for invalid endian parameter"""
         self.assertIsNone(conv_endian(0, 'small'))
+
+    def test_conv_endian2(self):
+        """Tests for big endian int"""
+        expected = '0E 91 A2'
+        result = conv_endian(954786, 'big')
+        self.assertEquals(expected, result)
+
 
 
 
