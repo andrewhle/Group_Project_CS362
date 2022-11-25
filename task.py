@@ -103,24 +103,21 @@ def conv_endian(num, endian='big'):
     if len(quotients) % 2 != 0:
         quotients.append("0")
 
+    # convert strings to bits and combine bits based on endian
     hex_num = ""
-    if endian == "big":
-        while len(quotients) > 0:
-            first = quotients.pop(0)
-            second = quotients.pop(0)
+    while len(quotients) > 0:
+        first = quotients.pop(0)
+        second = quotients.pop(0)
+        if endian == "big":
             hex_num = second + first + " " + hex_num
-        if num >= 0:
-            return hex_num[:-1]
-        else:
-            return "-" + hex_num[:-1]
-    elif endian == "little":
-        while len(quotients) > 0:
-            first = quotients.pop(0)
-            second = quotients.pop(0)
+        elif endian == "little":
             hex_num += second + first + " "
+        else:
+            return None
+
+    # return all except last digit which will always be a space based on sign.
+    if num >= 0:
         return hex_num[:-1]
     else:
-        return None
-
-    return "00"
+        return "-" + hex_num[:-1]
 
