@@ -120,4 +120,3 @@ def conv_endian(num, endian='big'):
         return hex_num[:-1]
     else:
         return "-" + hex_num[:-1]
-

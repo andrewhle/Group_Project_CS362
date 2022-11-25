@@ -121,11 +121,12 @@ class TestCase(unittest.TestCase):
         result = conv_endian(-521, "big")
         self.assertEqual(expected, result)
 
-    def test_conv_endian7(self):
+    def test_conv_endian8(self):
         """Tests for little endian negative int"""
         expected = "-09 02"
         result = conv_endian(-521, "little")
         self.assertEqual(expected, result)
+
 
 if __name__ == '__main__':
     unittest.main()
