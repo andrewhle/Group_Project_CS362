@@ -96,6 +96,12 @@ def conv_endian(num, endian='big'):
     while num > 15:
         quotients.append(num % 16)
         num = num // 16
+    if endian == "big":
+        pass
+    elif endian == "little":
+        pass
+    else:
+        return None
 
     return "00"
 
