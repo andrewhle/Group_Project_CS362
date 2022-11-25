@@ -101,7 +101,6 @@ def conv_endian(num, endian='big'):
     quotients.append(decimal_to_hex[num])
     if len(quotients) % 2 != 0:
         quotients.append("0")
-    print(quotients)
 
     hex_num = ""
     if endian == "big":

@@ -91,6 +91,11 @@ class TestCase(unittest.TestCase):
         result = conv_endian(954786, 'big')
         self.assertEquals(expected, result)
 
+    def test_conv_endian3(self):
+        """Tests for little endian positive int"""
+        expected = "A2 91 0E"
+        result = conv_endian(954786, "little")
+        self.assertEqual(expected, result)
 
 
 
