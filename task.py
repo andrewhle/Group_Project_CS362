@@ -88,4 +88,14 @@ def conv_endian(num, endian='big'):
     number. Endian type is determined by the flag 'endian'. Number is
     converted and returned as a string.
     """
+    decimal_to_hex = {
+      0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9",
+      10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"
+    }
+    quotients = []
+    while num > 15:
+        quotients.append(num % 16)
+        num = num // 16
+
     return "00"
+

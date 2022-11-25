@@ -81,6 +81,12 @@ class TestCase(unittest.TestCase):
         """Tests for valid return of function conv_endian."""
         self.assertEqual(conv_endian(0), "00")
 
+    def test_conv_endian(self):
+        """Tests for invalid endian parameter"""
+        self.assertIsNone(conv_endian(0, 'small'))
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
