@@ -94,11 +94,12 @@ def conv_endian(num, endian='big'):
     }
     # create a list of all hex digits. Use to convert to big or little endian
     quotients = []
+    abs_num = abs(num)
 
-    while num > 15:
-        quotients.append(decimal_to_hex[num % 16])
-        num = num // 16
-    quotients.append(decimal_to_hex[num])
+    while abs_num > 15:
+        quotients.append(decimal_to_hex[abs_num % 16])
+        abs_num = abs_num // 16
+    quotients.append(decimal_to_hex[abs_num])
     if len(quotients) % 2 != 0:
         quotients.append("0")
 
@@ -108,7 +109,10 @@ def conv_endian(num, endian='big'):
             first = quotients.pop(0)
             second = quotients.pop(0)
             hex_num = second + first + " " + hex_num
-        return hex_num[:-1]
+        if num >= 0:
+            return hex_num[:-1]
+        else:
+            return "-" + hex_num[:-1]
     elif endian == "little":
         while len(quotients) > 0:
             first = quotients.pop(0)
