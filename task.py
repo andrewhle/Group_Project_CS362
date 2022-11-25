@@ -110,7 +110,11 @@ def conv_endian(num, endian='big'):
             hex_num = second + first + " " + hex_num
         return hex_num[:-1]
     elif endian == "little":
-        pass
+        while len(quotients) > 0:
+            first = quotients.pop(0)
+            second = quotients.pop(0)
+            hex_num += second + first + " "
+        return hex_num[:-1]
     else:
         return None
 
