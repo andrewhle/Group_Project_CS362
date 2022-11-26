@@ -81,6 +81,52 @@ class TestCase(unittest.TestCase):
         """Tests for valid return of function conv_endian."""
         self.assertEqual(conv_endian(0), "00")
 
+    def test_conv_endian1(self):
+        """Tests for invalid endian parameter"""
+        self.assertIsNone(conv_endian(0, 'small'))
+
+    def test_conv_endian2(self):
+        """Tests for big endian int"""
+        expected = '0E 91 A2'
+        result = conv_endian(954786, 'big')
+        self.assertEquals(expected, result)
+
+    def test_conv_endian3(self):
+        """Tests for little endian positive int"""
+        expected = "A2 91 0E"
+        result = conv_endian(954786, "little")
+        self.assertEqual(expected, result)
+
+    def test_con_endian4(self):
+        """Tests for big endian negative int"""
+        expected = '-0E 91 A2'
+        result = conv_endian(-954786, 'big')
+        self.assertEquals(expected, result)
+
+    def test_conv_endian5(self):
+        """Tests for big endian negative int"""
+        expected = '-A2 91 0E'
+        result = conv_endian(-954786, 'little')
+        self.assertEquals(expected, result)
+
+    def test_conv_endian6(self):
+        """Tests for little endian negative int"""
+        expected = "-34"
+        result = conv_endian(-52, "little")
+        self.assertEqual(expected, result)
+
+    def test_conv_endian7(self):
+        """Tests for big endian negative int"""
+        expected = "-02 09"
+        result = conv_endian(-521, "big")
+        self.assertEqual(expected, result)
+
+    def test_conv_endian8(self):
+        """Tests for little endian negative int"""
+        expected = "-09 02"
+        result = conv_endian(-521, "little")
+        self.assertEqual(expected, result)
+
 
 if __name__ == '__main__':
     unittest.main()

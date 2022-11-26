@@ -1,5 +1,5 @@
 def conv_num(num_str):
-    """Takes a string and converts it to a base 10 number then
+    """Takes a string and converts it to a base 10 number, then
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
@@ -84,8 +84,50 @@ def calc_year_and_days(days):
 
 
 def conv_endian(num, endian='big'):
-    """Takes an integer value 'num' and converts it to a hexamdecimal
+    """Takes an integer value 'num' and converts it to a hexadecimal
     number. Endian type is determined by the flag 'endian'. Number is
     converted and returned as a string.
     """
-    return "00"
+    # check correct endian
+    if endian != 'big' and endian != 'little':
+        return None
+
+    decimal_to_hex = {
+      0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9",
+      10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"
+    }
+    # Create a list of all individual hex digits
+    quotients = []
+    abs_num = abs(num)
+
+    while abs_num > 15:
+        quotients.append(decimal_to_hex[abs_num % 16])
+        abs_num = abs_num // 16
+    quotients.append(decimal_to_hex[abs_num])
+    if len(quotients) % 2 != 0:
+        quotients.append("0")
+
+    # create a string of space separated hex bytes
+    hex_bytes = hex_bits_to_byte(quotients, endian)
+
+    # return the hex string based on sign.
+    if num >= 0:
+        return hex_bytes
+    else:
+        return "-" + hex_bytes
+
+
+def hex_bits_to_byte(bit_list, endian):
+    """Helper method that returns a string of space separated bytes
+     from the given parameter bit_list"""
+
+    # convert strings to bits and combine bits based on endian
+    hex_num = ""
+    while len(bit_list) > 0:
+        first = bit_list.pop(0)
+        second = bit_list.pop(0)
+        if endian == "big":
+            hex_num = second + first + " " + hex_num
+        elif endian == "little":
+            hex_num += second + first + " "
+    return hex_num[:-1]
