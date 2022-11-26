@@ -45,6 +45,26 @@ class TestCase(unittest.TestCase):
         """Tests that return value is of type int"""
         self.assertTrue(isinstance(conv_num("1"), int))
 
+    def test_decimal(self):
+        """Test valid decimal"""
+        self.assertEqual(conv_num("123."), 123.0)
+
+    def test_negative_decimal(self):
+        """Test negative valid decimal"""
+        self.assertEqual(conv_num("-123."), -123.0)
+
+    def test_invalid_decimal(self):
+        """Test invalid decimal point"""
+        self.assertIsNone(conv_num("12.3.45"))
+
+    def test_hex_decimal(self):
+        """Test valid hexdecimal"""
+        self.assertEqual(conv_num("0xD32"), 3378)
+
+    def test_invalid_hex_decimal(self):
+        """Test invalid hexdecimal"""
+        self.assertIsNone(conv_num("0xAZ4"))
+
 ##################################################
 #
 # Tests for my_datetime
