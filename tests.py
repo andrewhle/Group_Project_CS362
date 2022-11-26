@@ -71,6 +71,42 @@ class TestCase(unittest.TestCase):
         """Tests that 999999999 returns '09-09-2001'."""
         self.assertEqual(my_datetime(999999999), '09-09-2001')
 
+    def test_my_datetime_6(self):
+        """Tests that 123456789 returns '11-29-1973'."""
+        self.assertEqual(my_datetime(123456789), '11-29-1973')
+
+    def test_my_datetime_7(self):
+        """Tests that 9876543210 returns '12-22-2282'."""
+        self.assertEqual(my_datetime(9876543210), '12-22-2282')
+
+    def test_my_datetime_8(self):
+        """Tests that 201653971200 returns '02-29-8360'."""
+        self.assertEqual(my_datetime(201653971200), '02-29-8360')
+
+    def test_my_datetime_9(self):
+        """Tests that 951807600 returns '02-29-2000'."""
+        self.assertEqual(my_datetime(951807600), '02-29-2000')
+
+    def test_my_datetime_10(self):
+        """Tests that 951894000 returns '03-01-2000'."""
+        self.assertEqual(my_datetime(951894000), '03-01-2000')
+
+    def test_my_datetime_11(self):
+        """Tests that 1078124400 returns '03-01-2004'."""
+        self.assertEqual(my_datetime(1078124400), '03-01-2004')
+
+    def test_my_datetime_12(self):
+        """Tests that 1078038000 returns '02-29-2004'."""
+        self.assertEqual(my_datetime(1078038000), '02-29-2004')
+
+    def test_my_datetime_13(self):
+        """Tests that 2529730800 returns '03-01-2050'."""
+        self.assertEqual(my_datetime(2529730800), '03-01-2050')
+
+    def test_my_datetime_14(self):
+        """Tests that 2529644400 returns '02-28-2050'."""
+        self.assertEqual(my_datetime(2529644400), '02-28-2050')
+
 ##################################################
 #
 # Tests for conv_endian

@@ -45,6 +45,8 @@ def my_datetime(num_sec):
     seconds_in_day = 86400
     days = num_sec // seconds_in_day
     year, day_count = calc_year_and_days(days)
+    if is_leap_year(year):
+        days_in_months["02"] += 1
     day = 0
     for month in days_in_months:
         if day_count == 0:
@@ -57,6 +59,8 @@ def my_datetime(num_sec):
                 return month + "-" + day_str + "-" + str(year)
             day += 1
             day_count -= 1
+        if day_count == 0:
+            return month + "-" + str(day) + "-" + str(year)
         day = 0
 
 
@@ -72,15 +76,24 @@ def calc_year_and_days(days):
             year += 1
             day_count = 0
         if day_count == 365:
-            if year % 4 == 0:
-                if year % 100 == 0:
-                    if year % 400 != 0:
-                        year += 1
-                        day_count = 0
-            else:
+            if not is_leap_year(year):
                 year += 1
                 day_count = 0
     return (year, day_count)
+
+
+def is_leap_year(year):
+    """Returns True if integer year is a leap year and False if not."""
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            else:
+                return False
+        else:
+            return True
+    else:
+        return False
 
 
 def conv_endian(num, endian='big'):
@@ -93,8 +106,9 @@ def conv_endian(num, endian='big'):
         return None
 
     decimal_to_hex = {
-      0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9",
-      10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"
+      0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6",
+      7: "7", 8: "8", 9: "9", 10: "A", 11: "B", 12: "C", 13: "D",
+      14: "E", 15: "F"
     }
     # Create a list of all individual hex digits
     quotients = []
