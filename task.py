@@ -40,6 +40,9 @@ def conv_num(num_str):
     and hexadecimal string representations of numbers.
     """
 
+    if type(num_str) != str:
+        return None
+
     if not num_str:
         return None
 
