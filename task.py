@@ -1,3 +1,39 @@
+def conv_hex_helper(num_str):
+    hex = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F'
+    ]
+
+    for i in num_str:
+        if i not in hex:
+            return None
+
+    def get_digit(digit):
+        if digit in hex:
+            return hex.index(digit)
+
+    dec_num = 0
+    power = 0
+    for digit in range(len(num_str), 0, -1):
+        dec_num = dec_num + ((16 ** power) * get_digit(num_str[digit - 1]))
+        power += 1
+    return dec_num
+
+
 def conv_num(num_str):
     """Takes a string and converts it to a base 10 number then
     returns it. Can handle strings representing integer, float,
@@ -9,39 +45,7 @@ def conv_num(num_str):
 
     if '0x' in num_str:
         num_str = num_str[2:]
-
-        hex = [
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F']
-
-        for i in num_str:
-            if i not in hex:
-                return None
-
-        def get_digit(digit):
-            if digit in hex:
-                return hex.index(digit)
-
-        dec_num = 0
-        power = 0
-        for digit in range(len(num_str), 0, -1):
-            dec_num = dec_num + ((16 ** power) * get_digit(num_str[digit - 1]))
-            power += 1
-        return dec_num
+        conv_hex_helper(num_str)
 
     nums = "1234567890"
     negative = 1
