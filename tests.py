@@ -65,10 +65,6 @@ class TestCase(unittest.TestCase):
         """Test invalid hexdecimal"""
         self.assertIsNone(conv_num("0xAZ4"))
 
-    def test_negative_hex_decimal(self):
-        """Test valid hexdecimal"""
-        self.assertEqual(conv_num("-0xD32"), -3378)
-
     def test_invalid_type_input(self):
         self.assertIsNone(conv_num(123))
 
