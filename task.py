@@ -3,8 +3,52 @@ def conv_num(num_str):
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
+
     if not num_str:
         return None
+
+    if '0x' in num_str:
+        num_str = num_str[2:]
+
+        hex = [
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F']
+
+        for i in num_str:
+            if i not in hex:
+                return None
+
+        def get_digit(digit):
+            for i in range(len(hex)):
+                if digit == hex[i]:
+                    return i
+
+        dec_num = 0
+        power = 0
+        # iterate from last digit of hex
+        for digit in range(len(num_str), 0, -1):
+            # D32
+            # dec_num = 0 + (16^0 * 2)
+            # dec_num = 2 + (16^1 * 3)
+            # dec_num = 50 + (16^2 * 13)
+            dec_num = dec_num + ((16 ** power) * get_digit(num_str[digit - 1]))
+            power += 1
+        return dec_num
+
     nums = "1234567890"
     negative = 1
     res = 0
