@@ -33,18 +33,12 @@ def conv_num(num_str):
                 return None
 
         def get_digit(digit):
-            for i in range(len(hex)):
-                if digit == hex[i]:
-                    return i
+            if digit in hex:
+                return hex.index(digit)
 
         dec_num = 0
         power = 0
-        # iterate from last digit of hex
         for digit in range(len(num_str), 0, -1):
-            # D32
-            # dec_num = 0 + (16^0 * 2)
-            # dec_num = 2 + (16^1 * 3)
-            # dec_num = 50 + (16^2 * 13)
             dec_num = dec_num + ((16 ** power) * get_digit(num_str[digit - 1]))
             power += 1
         return dec_num
