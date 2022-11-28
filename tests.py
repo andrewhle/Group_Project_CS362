@@ -1,5 +1,7 @@
 import unittest
 from task import conv_num, my_datetime, conv_endian
+from datetime import datetime, timezone
+from random import randrange
 
 
 class TestCase(unittest.TestCase):
@@ -21,6 +23,10 @@ class TestCase(unittest.TestCase):
         """Tests that empty string input returns None."""
         self.assertIsNone(conv_num(""))
 
+    def test_conv_num_not_string(self):
+        """Tests that non-string input returns None."""
+        self.assertIsNone(conv_num(5))
+
     def test_conv_num_int5(self):
         """Tests that input of '5' returns 5."""
         self.assertEqual(conv_num("5"), 5)
@@ -29,17 +35,45 @@ class TestCase(unittest.TestCase):
         """Tests that input of '23' returns 23."""
         self.assertEqual(conv_num("23"), 23)
 
+    def test_conv_num_int0001(self):
+        """Tests that input of '0001' returns 1."""
+        self.assertEqual(conv_num("0001"), 1)
+
+    def test_conv_num_intneg_0001(self):
+        """Tests that input of '-0001' returns -1."""
+        self.assertEqual(conv_num("-0001"), -1)
+
     def test_conv_num_neg_int(self):
         """Tests that input of '-845' returns -845."""
         self.assertEqual(conv_num("-845"), -845)
+
+    def test_conv_num_invalid_char_space(self):
+        """Tests that input of ' 1' returns None."""
+        self.assertIsNone(conv_num(" 1"))
+
+    def test_conv_num_invalid_char_space2(self):
+        """Tests that input of '1 ' returns None."""
+        self.assertIsNone(conv_num("1 "))
 
     def test_conv_num_invalid_char(self):
         """Tests that input of '1234a89' returns None."""
         self.assertIsNone(conv_num("1234a89"))
 
+    def test_conv_num_invalid_char2(self):
+        """Tests that input of '@' returns None."""
+        self.assertIsNone(conv_num("@"))
+
     def test_conv_num_invalid_neg_sign(self):
         """Tests that input of '--845' returns None."""
         self.assertIsNone(conv_num("--845"))
+
+    def test_conv_num_invalid_neg_sign2(self):
+        """Tests that input of '-845-' returns None."""
+        self.assertIsNone(conv_num("-845-"))
+
+    def test_conv_num_invalid_neg_sign3(self):
+        """Tests that input of '-' returns None."""
+        self.assertIsNone(conv_num("-"))
 
     def test_conv_num_int_returned(self):
         """Tests that return value is of type int"""
@@ -106,6 +140,18 @@ class TestCase(unittest.TestCase):
     def test_my_datetime_14(self):
         """Tests that 2529644400 returns '02-28-2050'."""
         self.assertEqual(my_datetime(2529644400), '02-28-2050')
+
+    def test_random(self):
+        """"""
+        pass_test = True
+        for _ in range(1000):
+            tstamp = randrange(0, 10000000000)
+            expected = datetime.fromtimestamp(
+                tstamp, tz=timezone.utc).strftime("%m-%d-%Y")
+            result = my_datetime(tstamp)
+            if expected != result:
+                pass_test = False
+        self.assertTrue(pass_test)
 
 ##################################################
 #

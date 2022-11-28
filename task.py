@@ -3,24 +3,33 @@ def conv_num(num_str):
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
-    if not num_str:
+    if not num_str or not isinstance(num_str, str):
         return None
+    # Check for valid integer
+    if '.' not in num_str and 'x' not in num_str:
+        return int_conv(num_str)
+    else:
+        return None
+
+
+def int_conv(num_str):
+    """Helper function for conv_num that converts an integer string
+    to an integer.
+    """
     nums = "1234567890"
     negative = 1
     res = 0
-    # Check for valid integer
-    if '.' not in num_str and 'x' not in num_str:
-        for i in range(len(num_str)):
-            if i == 0 and num_str[i] == '-':
-                negative = -1
-                continue
-            if num_str[i] in nums:
-                res = res * 10 + (ord(num_str[i]) - 48)
-            else:
-                return None
-        return res * negative
-    else:
+    if len(num_str) == 1 and num_str[0] not in nums:
         return None
+    for i in range(len(num_str)):
+        if i == 0 and num_str[i] == '-':
+            negative = -1
+            continue
+        if num_str[i] in nums:
+            res = res * 10 + (ord(num_str[i]) - 48)
+        else:
+            return None
+    return res * negative
 
 
 def my_datetime(num_sec):
@@ -50,15 +59,16 @@ def my_datetime(num_sec):
     day = 0
     for month in days_in_months:
         if day_count == 0:
-            return month + "-" + str(day) + "-" + str(year)
+            return "12-31-" + str(year-1)
         while day < days_in_months[month]:
+            day += 1
+            day_count -= 1
             if day_count == 0:
                 day_str = str(day)
                 if len(day_str) == 1:
                     day_str = "0" + day_str
                 return month + "-" + day_str + "-" + str(year)
-            day += 1
-            day_count -= 1
+
         if day_count == 0:
             return month + "-" + str(day) + "-" + str(year)
         day = 0
