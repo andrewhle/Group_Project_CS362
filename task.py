@@ -59,15 +59,16 @@ def my_datetime(num_sec):
     day = 0
     for month in days_in_months:
         if day_count == 0:
-            return month + "-" + str(day) + "-" + str(year)
+            return "12-31-" + str(year-1)
         while day < days_in_months[month]:
+            day += 1
+            day_count -= 1
             if day_count == 0:
                 day_str = str(day)
                 if len(day_str) == 1:
                     day_str = "0" + day_str
                 return month + "-" + day_str + "-" + str(year)
-            day += 1
-            day_count -= 1
+
         if day_count == 0:
             return month + "-" + str(day) + "-" + str(year)
         day = 0

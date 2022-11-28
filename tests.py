@@ -1,5 +1,7 @@
 import unittest
 from task import conv_num, my_datetime, conv_endian
+from datetime import datetime, timezone
+from random import randrange
 
 
 class TestCase(unittest.TestCase):
@@ -48,6 +50,10 @@ class TestCase(unittest.TestCase):
     def test_conv_num_invalid_char_space(self):
         """Tests that input of ' 1' returns None."""
         self.assertIsNone(conv_num(" 1"))
+
+    def test_conv_num_invalid_char_space2(self):
+        """Tests that input of '1 ' returns None."""
+        self.assertIsNone(conv_num("1 "))
 
     def test_conv_num_invalid_char(self):
         """Tests that input of '1234a89' returns None."""
@@ -134,6 +140,18 @@ class TestCase(unittest.TestCase):
     def test_my_datetime_14(self):
         """Tests that 2529644400 returns '02-28-2050'."""
         self.assertEqual(my_datetime(2529644400), '02-28-2050')
+
+    def test_random(self):
+        """"""
+        pass_test = True
+        for _ in range(10000):
+            tstamp = randrange(0, 1000000000)
+            expected = datetime.fromtimestamp(
+                tstamp, tz=timezone.utc).strftime("%m-%d-%Y")
+            result = my_datetime(tstamp)
+            if expected != result:
+                pass_test = False
+        self.assertTrue(pass_test)
 
 ##################################################
 #
