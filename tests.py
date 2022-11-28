@@ -144,8 +144,8 @@ class TestCase(unittest.TestCase):
     def test_random(self):
         """"""
         pass_test = True
-        for _ in range(10000):
-            tstamp = randrange(0, 1000000000)
+        for _ in range(1000):
+            tstamp = randrange(0, 10000000000)
             expected = datetime.fromtimestamp(
                 tstamp, tz=timezone.utc).strftime("%m-%d-%Y")
             result = my_datetime(tstamp)
