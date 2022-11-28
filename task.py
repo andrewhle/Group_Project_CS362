@@ -34,38 +34,94 @@ def conv_hex_helper(num_str):
     return dec_num
 
 
+def conv_float_helper(num_str):
+    int_value = 0
+    fraction_value = 0
+    sign = 1
+
+    value = {'0': 0,
+             '1': 1,
+             '2': 2,
+             '3': 3,
+             '4': 4,
+             '5': 5,
+             '6': 6,
+             '7': 7,
+             '8': 8,
+             '9': 9}
+    decimal = False
+    fraction_counter = 1
+
+    for digit in num_str:
+        if digit == '-':
+            sign = -1
+            continue
+        if digit == '.':
+            decimal = True
+            continue
+        if decimal:
+            fraction_value = (fraction_value * 10) + value[digit]
+            fraction_counter *= 10
+        else:
+            int_value = int_value * 10 + value[digit]
+
+    if decimal:
+        int_value = int_value + (fraction_value / fraction_counter)
+
+    return int_value * sign
+
+
 def conv_num(num_str):
-    """Takes a string and converts it to a base 10 number then
+    """Takes a string and converts it to a base 10 number, then
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
 
-    if type(num_str) != str:
+    # Check if valid type
+    if not num_str or not isinstance(num_str, str):
         return None
+    # Check for valid hex
+    if num_str.startswith('0x') or num_str.startswith('-0x'):
 
-    if not num_str:
-        return None
+        # Positive hex 0xD32
+        if num_str.startswith('0x'):
+            num_str = num_str[2:]
+            return conv_hex_helper(num_str)
+        # Negative hex -0xD32
+        else:
+            num_str = num_str[3:]
+            return conv_hex_helper(num_str) * (-1)
 
-    if '0x' in num_str:
-        num_str = num_str[2:]
-        return conv_hex_helper(num_str)
+    # if decimal point appear only once and not hex
+    if (num_str.count('.') == 1) and '0x' not in num_str:
 
+        return conv_float_helper(num_str)
+
+    # Check for valid integer
+    if '.' not in num_str and 'x' not in num_str:
+        return int_conv(num_str)
+
+    return None
+
+
+def int_conv(num_str):
+    """Helper function for conv_num that converts an integer string
+    to an integer.
+    """
     nums = "1234567890"
     negative = 1
     res = 0
-    # Check for valid integer
-    if '.' not in num_str and 'x' not in num_str:
-        for i in range(len(num_str)):
-            if i == 0 and num_str[i] == '-':
-                negative = -1
-                continue
-            if num_str[i] in nums:
-                res = res * 10 + (ord(num_str[i]) - 48)
-            else:
-                return None
-        return res * negative
-    else:
+    if len(num_str) == 1 and num_str[0] not in nums:
         return None
+    for i in range(len(num_str)):
+        if i == 0 and num_str[i] == '-':
+            negative = -1
+            continue
+        if num_str[i] in nums:
+            res = res * 10 + (ord(num_str[i]) - 48)
+        else:
+            return None
+    return res * negative
 
 
 def my_datetime(num_sec):
@@ -90,18 +146,23 @@ def my_datetime(num_sec):
     seconds_in_day = 86400
     days = num_sec // seconds_in_day
     year, day_count = calc_year_and_days(days)
+    if is_leap_year(year):
+        days_in_months["02"] += 1
     day = 0
     for month in days_in_months:
         if day_count == 0:
-            return month + "-" + str(day) + "-" + str(year)
+            return "12-31-" + str(year-1)
         while day < days_in_months[month]:
+            day += 1
+            day_count -= 1
             if day_count == 0:
                 day_str = str(day)
                 if len(day_str) == 1:
                     day_str = "0" + day_str
                 return month + "-" + day_str + "-" + str(year)
-            day += 1
-            day_count -= 1
+
+        if day_count == 0:
+            return month + "-" + str(day) + "-" + str(year)
         day = 0
 
 
@@ -117,20 +178,72 @@ def calc_year_and_days(days):
             year += 1
             day_count = 0
         if day_count == 365:
-            if year % 4 == 0:
-                if year % 100 == 0:
-                    if year % 400 != 0:
-                        year += 1
-                        day_count = 0
-            else:
+            if not is_leap_year(year):
                 year += 1
                 day_count = 0
     return (year, day_count)
 
 
+def is_leap_year(year):
+    """Returns True if integer year is a leap year and False if not."""
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            else:
+                return False
+        else:
+            return True
+    else:
+        return False
+
+
 def conv_endian(num, endian='big'):
-    """Takes an integer value 'num' and converts it to a hexamdecimal
+    """Takes an integer value 'num' and converts it to a hexadecimal
     number. Endian type is determined by the flag 'endian'. Number is
     converted and returned as a string.
     """
-    return "00"
+    # check correct endian
+    if endian != 'big' and endian != 'little':
+        return None
+
+    decimal_to_hex = {
+      0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6",
+      7: "7", 8: "8", 9: "9", 10: "A", 11: "B", 12: "C", 13: "D",
+      14: "E", 15: "F"
+    }
+    # Create a list of all individual hex digits
+    quotients = []
+    abs_num = abs(num)
+
+    while abs_num > 15:
+        quotients.append(decimal_to_hex[abs_num % 16])
+        abs_num = abs_num // 16
+    quotients.append(decimal_to_hex[abs_num])
+    if len(quotients) % 2 != 0:
+        quotients.append("0")
+
+    # create a string of space separated hex bytes
+    hex_bytes = hex_bits_to_byte(quotients, endian)
+
+    # return the hex string based on sign.
+    if num >= 0:
+        return hex_bytes
+    else:
+        return "-" + hex_bytes
+
+
+def hex_bits_to_byte(bit_list, endian):
+    """Helper method that returns a string of space separated bytes
+     from the given parameter bit_list"""
+
+    # convert strings to bits and combine bits based on endian
+    hex_num = ""
+    while len(bit_list) > 0:
+        first = bit_list.pop(0)
+        second = bit_list.pop(0)
+        if endian == "big":
+            hex_num = second + first + " " + hex_num
+        elif endian == "little":
+            hex_num += second + first + " "
+    return hex_num[:-1]
