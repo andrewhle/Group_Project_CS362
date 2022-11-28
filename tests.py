@@ -21,6 +21,10 @@ class TestCase(unittest.TestCase):
         """Tests that empty string input returns None."""
         self.assertIsNone(conv_num(""))
 
+    def test_conv_num_not_string(self):
+        """Tests that non-string input returns None."""
+        self.assertIsNone(conv_num(5))
+
     def test_conv_num_int5(self):
         """Tests that input of '5' returns 5."""
         self.assertEqual(conv_num("5"), 5)
@@ -29,17 +33,41 @@ class TestCase(unittest.TestCase):
         """Tests that input of '23' returns 23."""
         self.assertEqual(conv_num("23"), 23)
 
+    def test_conv_num_int0001(self):
+        """Tests that input of '0001' returns 1."""
+        self.assertEqual(conv_num("0001"), 1)
+
+    def test_conv_num_intneg_0001(self):
+        """Tests that input of '-0001' returns -1."""
+        self.assertEqual(conv_num("-0001"), -1)
+
     def test_conv_num_neg_int(self):
         """Tests that input of '-845' returns -845."""
         self.assertEqual(conv_num("-845"), -845)
+
+    def test_conv_num_invalid_char_space(self):
+        """Tests that input of ' 1' returns None."""
+        self.assertIsNone(conv_num(" 1"))
 
     def test_conv_num_invalid_char(self):
         """Tests that input of '1234a89' returns None."""
         self.assertIsNone(conv_num("1234a89"))
 
+    def test_conv_num_invalid_char2(self):
+        """Tests that input of '@' returns None."""
+        self.assertIsNone(conv_num("@"))
+
     def test_conv_num_invalid_neg_sign(self):
         """Tests that input of '--845' returns None."""
         self.assertIsNone(conv_num("--845"))
+
+    def test_conv_num_invalid_neg_sign2(self):
+        """Tests that input of '-845-' returns None."""
+        self.assertIsNone(conv_num("-845-"))
+
+    def test_conv_num_invalid_neg_sign3(self):
+        """Tests that input of '-' returns None."""
+        self.assertIsNone(conv_num("-"))
 
     def test_conv_num_int_returned(self):
         """Tests that return value is of type int"""
