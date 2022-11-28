@@ -48,7 +48,7 @@ def conv_num(num_str):
 
     if '0x' in num_str:
         num_str = num_str[2:]
-        conv_hex_helper(num_str)
+        return conv_hex_helper(num_str)
 
     nums = "1234567890"
     negative = 1
