@@ -268,6 +268,16 @@ class TestCase(unittest.TestCase):
         result = conv_endian(-521, "little")
         self.assertEqual(expected, result)
 
+    def test_conv_endian9(self):
+        """Tests for little endian negative int"""
+        expected = "-A2 91 0E"
+        result = conv_endian(num=-954786, endian='little')
+        self.assertEqual(expected, result)
+
+    def test_conv_endian10(self):
+        """Tests for invalid input"""
+        self.assertIsNone(conv_endian(num=-954786, endian='small'))
+
 
 if __name__ == '__main__':
     unittest.main()
