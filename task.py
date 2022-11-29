@@ -1,15 +1,107 @@
+def conv_hex_helper(num_str):
+    hex = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F'
+    ]
+
+    for i in num_str:
+        if i not in hex:
+            return None
+
+    def get_digit(digit):
+        if digit in hex:
+            return hex.index(digit)
+
+    dec_num = 0
+    power = 0
+    for digit in range(len(num_str), 0, -1):
+        dec_num = dec_num + ((16 ** power) * get_digit(num_str[digit - 1]))
+        power += 1
+    return dec_num
+
+
+def conv_float_helper(num_str):
+    int_value = 0
+    fraction_value = 0
+    sign = 1
+
+    value = {'0': 0,
+             '1': 1,
+             '2': 2,
+             '3': 3,
+             '4': 4,
+             '5': 5,
+             '6': 6,
+             '7': 7,
+             '8': 8,
+             '9': 9}
+    decimal = False
+    fraction_counter = 1
+
+    for digit in num_str:
+        if digit == '-':
+            sign = -1
+            continue
+        if digit == '.':
+            decimal = True
+            continue
+        if decimal:
+            fraction_value = (fraction_value * 10) + value[digit]
+            fraction_counter *= 10
+        else:
+            int_value = int_value * 10 + value[digit]
+
+    if decimal:
+        int_value = int_value + (fraction_value / fraction_counter)
+
+    return int_value * sign
+
+
 def conv_num(num_str):
     """Takes a string and converts it to a base 10 number, then
     returns it. Can handle strings representing integer, float,
     and hexadecimal string representations of numbers.
     """
+
+    # Check if valid type
     if not num_str or not isinstance(num_str, str):
         return None
+    # Check for valid hex
+    if num_str.startswith('0x') or num_str.startswith('-0x'):
+
+        # Positive hex 0xD32
+        if num_str.startswith('0x'):
+            num_str = num_str[2:]
+            return conv_hex_helper(num_str)
+        # Negative hex -0xD32
+        else:
+            num_str = num_str[3:]
+            return conv_hex_helper(num_str) * (-1)
+
+    # if decimal point appear only once and not hex
+    if (num_str.count('.') == 1) and '0x' not in num_str:
+
+        return conv_float_helper(num_str)
+
     # Check for valid integer
     if '.' not in num_str and 'x' not in num_str:
         return int_conv(num_str)
-    else:
-        return None
+
+    return None
 
 
 def int_conv(num_str):
