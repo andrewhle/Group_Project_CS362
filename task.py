@@ -80,6 +80,8 @@ def conv_num(num_str):
     # Check if valid type
     if not num_str or not isinstance(num_str, str):
         return None
+    if num_str.count('-') > 1:
+        return None
     # Check for valid hex
     if num_str.startswith('0x') or num_str.startswith('-0x'):
 

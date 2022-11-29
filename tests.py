@@ -79,6 +79,26 @@ class TestCase(unittest.TestCase):
         """Tests that return value is of type int"""
         self.assertTrue(isinstance(conv_num("1"), int))
 
+    def test_conv_num_float_invalid1(self):
+        """Tests that input of '1.2.3.4' returns None."""
+        self.assertIsNone(conv_num("1.2.3.4"))
+
+    def test_conv_num_float_invalid2(self):
+        """Tests that input of '2.2a' returns None."""
+        self.assertIsNone(conv_num("-2.-2"))
+
+    def test_conv_num_float1(self):
+        """Tests that input of '-123.45' returns -123.45."""
+        self.assertEqual(conv_num("-123.45"), -123.45)
+
+    def test_conv_num_float2(self):
+        """Tests that input of '.45' returns .45."""
+        self.assertEqual(conv_num(".45"), .45)
+
+    def test_conv_num_float3(self):
+        """Tests that input of '123.' returns 123.0."""
+        self.assertEqual(conv_num("123."), 123.0)
+
 ##################################################
 #
 # Tests for my_datetime
