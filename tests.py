@@ -84,8 +84,16 @@ class TestCase(unittest.TestCase):
         self.assertIsNone(conv_num("1.2.3.4"))
 
     def test_conv_num_float_invalid2(self):
-        """Tests that input of '2.2a' returns None."""
+        """Tests that input of '-2.-2' returns None."""
         self.assertIsNone(conv_num("-2.-2"))
+
+    def test_conv_num_float_invalid3(self):
+        """Tests that input of '2.2a' returns None."""
+        self.assertIsNone(conv_num("2.2a"))
+
+    def test_conv_num_float_invalid4(self):
+        """Tests that input of '2. 2' returns None."""
+        self.assertIsNone(conv_num("2. 2"))
 
     def test_conv_num_float1(self):
         """Tests that input of '-123.45' returns -123.45."""

@@ -38,7 +38,7 @@ def conv_float_helper(num_str):
     int_value = 0
     fraction_value = 0
     sign = 1
-
+    valid_chars = "1234567890.-"
     value = {'0': 0,
              '1': 1,
              '2': 2,
@@ -53,6 +53,8 @@ def conv_float_helper(num_str):
     fraction_counter = 1
 
     for digit in num_str:
+        if digit not in valid_chars:
+            return None
         if digit == '-':
             sign = -1
             continue
