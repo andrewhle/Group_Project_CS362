@@ -1,7 +1,7 @@
 import unittest
 from task import conv_num, my_datetime, conv_endian
 from datetime import datetime, timezone
-from random import randrange
+from random import randrange, choice
 
 
 class TestCase(unittest.TestCase):
@@ -79,6 +79,65 @@ class TestCase(unittest.TestCase):
         """Tests that return value is of type int"""
         self.assertTrue(isinstance(conv_num("1"), int))
 
+    def test_conv_num_float_invalid1(self):
+        """Tests that input of '1.2.3.4' returns None."""
+        self.assertIsNone(conv_num("1.2.3.4"))
+
+    def test_conv_num_float_invalid2(self):
+        """Tests that input of '-2.-2' returns None."""
+        self.assertIsNone(conv_num("-2.-2"))
+
+    def test_conv_num_float_invalid3(self):
+        """Tests that input of '2.2a' returns None."""
+        self.assertIsNone(conv_num("2.2a"))
+
+    def test_conv_num_float_invalid4(self):
+        """Tests that input of '2. 2' returns None."""
+        self.assertIsNone(conv_num("2. 2"))
+
+    def test_conv_num_float1(self):
+        """Tests that input of '-123.45' returns -123.45."""
+        self.assertEqual(conv_num("-123.45"), -123.45)
+
+    def test_conv_num_float2(self):
+        """Tests that input of '.45' returns .45."""
+        self.assertEqual(conv_num(".45"), .45)
+
+    def test_conv_num_float3(self):
+        """Tests that input of '123.' returns 123.0."""
+        self.assertEqual(conv_num("123."), 123.0)
+
+    def test_conv_num_hex1(self):
+        """Tests that input of '0x123G' returns None"""
+        self.assertIsNone(conv_num("0x123G"))
+
+    def test_conv_num_hex2(self):
+        """Tests that input of '0xAD4' returns 2772"""
+        self.assertEqual(conv_num("0xAD4"), 2772)
+
+    def test_conv_num_hex3(self):
+        """Tests that input of '0xAZ4' returns None"""
+        self.assertIsNone(conv_num("0xAZ4"))
+
+    def test_conv_num_hex4(self):
+        """Tests that input of '0x AZ4' returns None"""
+        self.assertIsNone(conv_num("0x AZ4"))
+
+    def test_random_hex(self):
+        """Random tests for converting hex strings"""
+        pass_test = True
+        chars = "1234567890ABCDEF"
+        for _ in range(100):
+            t = "0x"
+            length = randrange(1, 10)
+            for _ in range(length):
+                t += choice(chars)
+            expected = eval(t)
+            result = conv_num(t)
+            if expected != result:
+                pass_test = False
+        self.assertTrue(pass_test)
+
 ##################################################
 #
 # Tests for my_datetime
@@ -141,7 +200,7 @@ class TestCase(unittest.TestCase):
         """Tests that 2529644400 returns '02-28-2050'."""
         self.assertEqual(my_datetime(2529644400), '02-28-2050')
 
-    def test_random(self):
+    def test_random_datetime(self):
         """"""
         pass_test = True
         for _ in range(1000):
@@ -208,6 +267,16 @@ class TestCase(unittest.TestCase):
         expected = "-09 02"
         result = conv_endian(-521, "little")
         self.assertEqual(expected, result)
+
+    def test_conv_endian9(self):
+        """Tests for little endian negative int"""
+        expected = "-A2 91 0E"
+        result = conv_endian(num=-954786, endian='little')
+        self.assertEqual(expected, result)
+
+    def test_conv_endian10(self):
+        """Tests for invalid input"""
+        self.assertIsNone(conv_endian(num=-954786, endian='small'))
 
 
 if __name__ == '__main__':
